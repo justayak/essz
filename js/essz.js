@@ -35,7 +35,7 @@ essz.Matrix2D = function(width,height){
 };
 
 /**
- * Gets a certain value of the matrix
+ * Gets a certain value of the matrixa
  * @param x
  * @param y
  * @return {*}
