@@ -3,12 +3,13 @@
 <head>
     <title>test</title>
 </head>
-<script src="js/essz.js"></script>
+<!--script src="js/essz.js"></script-->
+<script src="js/essz_minified.js"></script>
 <script>
 
     var list = essz.intArray(10);
 
-    var matrix = essz.matrix2D(10,5);
+    var matrix = essz.matrix2D(10,50);
 
     matrix.set(5,4,100);
 
@@ -19,6 +20,8 @@
     console.log(v + " << " + w);
 
     console.log("done");
+
+    console.log(matrix.debug());
 
 </script>
 <body>

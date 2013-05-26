@@ -35,7 +35,7 @@ essz.Matrix2D = function(width,height){
 };
 
 /**
- * Gets a certain value of the matrixa
+ * Gets a certain value of the matrix
  * @param x
  * @param y
  * @return {*}
@@ -51,14 +51,58 @@ essz.Matrix2D.prototype.get = function(x,y){
  * @param y
  * @param value
  */
-essz.Matrix2D.prototype.set = function(x,y,value, width, height){
-    if (width === undefined || height === undefined){
-        var pos = (y*this.width) + x;
-        this._data[pos] = value;
-        return this;
-    }else{
+essz.Matrix2D.prototype.set = function(x,y,value){
+    var pos = (y*this.width) + x;
+    this._data[pos] = value;
+    return this;
+};
+
+/**
+ * Set multiple fields on the matrix
+ * @param x
+ * @param y
+ * @param value
+ * @param width
+ * @param height
+ */
+essz.Matrix2D.prototype.setField = function(x,y,width, height,value){
+
+    for (var Y = 0; Y < height; Y++){
+        for (var X = 0; X < width; X++){
+            var pos = ((y + Y) *this.width) + (x + X);
+            this._data[pos] = value;
+        }
 
     }
+
+}
+
+/**
+ * returns a Information-String about the Matrix
+ */
+essz.Matrix2D.prototype.debug = function(){
+
+    var newLine = "\n";
+    var result = "";
+
+    for (var y = -1; y < this.height;y++){
+        for (var x = -1; x < this.width;x++){
+            if (y === -1 && x === -1 ){
+                result = "\t\t"
+            }else if (y === -1){
+                result += "|\t" + "<" + x + ">\t"
+            }else if (x === -1 ){
+                result += "|\t" + "<" + y + ">\t"
+            }else{
+                var pos = (y*this.width) + x;
+                result += "|\t" + this._data[pos] + "\t";
+            }
+        }
+        result += newLine;
+    }
+
+    return result;
+
 };
 
 /**
