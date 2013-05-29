@@ -66,15 +66,12 @@ essz.Matrix2D.prototype.set = function(x,y,value){
  * @param height
  */
 essz.Matrix2D.prototype.setField = function(x,y,width, height,value){
-
     for (var Y = 0; Y < height; Y++){
         for (var X = 0; X < width; X++){
             var pos = ((y + Y) *this.width) + (x + X);
             this._data[pos] = value;
         }
-
     }
-
 }
 
 /**
