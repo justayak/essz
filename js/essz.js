@@ -17,8 +17,87 @@ var essz = {
     matrix2D : function(width,height){
         var result = new essz.Matrix2D(width,height);
         return result;
+    },
+
+    bitMatrix2D : function(width,height){
+        return new essz.BitMatrix2D(width,height);
     }
 
+}
+
+/**
+ * @param width (in bits)
+ * @param height (in bits)
+ * @constructor
+ */
+essz.BitMatrix2D = function(width,height){
+    // we have to map the width and height from bit to byte
+    var byteWidth = Math.ceil(width / 8.0);
+    var buffer = new ArrayBuffer(byteWidth * height);
+    this._data = new Uint8Array(buffer);
+    this.byteWidth = byteWidth;
+    this.byteHeight = height;
+};
+
+essz.BitMatrix2D.prototype.set = function(x,y){
+    var bytePosX = (x / 8.0);
+    bytePosX = bytePosX|bytePosX; // fast floor (only 32bit integer!)
+    var bitPosX = x % 8
+
+    var pos = (bytePosX*this.byteWidth) + y;
+    var n = this._data[pos];
+
+    var mask = 1 << bitPosX;
+    n |= mask;
+    this._data[pos] = n;
+    return this;
+};
+
+essz.BitMatrix2D.prototype.clear = function(x,y){
+    var bytePosX = (x / 8.0);
+    bytePosX = bytePosX|bytePosX; // fast floor (only 32bit integer!)
+    var bitPosX = x % 8
+
+    var pos = (bytePosX*this.byteWidth) + y;
+    var n = this._data[pos];
+
+    var mask = 1 << bitPosX;
+    n &=~mask;
+    this._data[pos] = n;
+    return this;
+}
+
+essz.BitMatrix2D.prototype.test = function(x,y){
+    var bytePosX = (x / 8.0);
+    bytePosX = bytePosX|bytePosX; // fast floor (only 32bit integer!)
+    var bitPosX = x % 8
+
+    var pos = (bytePosX*this.byteWidth) + y;
+    var n = this._data[pos];
+
+    var mask = 1 << bitPosX;
+    return ((n&mask) != 0)
+};
+
+essz.BitMatrix2D.prototype.debug = function(){
+    var result = "";
+    for (var y = 0; y < this.byteHeight;y++){
+        if (y%8===0){
+            result +="\n\n";
+        }else if (y%4===0){
+            result +="\n";
+        }
+        for (var x = 0; x < (this.byteWidth * 8);x++){
+            if (x%8===0){
+                result += "  "
+            }else if (x%4===0){
+                result += " "
+            }
+            result += (this.test(x,y) ? "1 " : "0 ");
+        }
+        result += "\n";
+    }
+    return result;
 }
 
 /**
