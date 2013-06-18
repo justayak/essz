@@ -7,6 +7,7 @@
 var essz = {
 
     INTEGER_BYTESIZE : 4,
+    SHORT_BYTESIZE : 2,
 
     intArray : function(size){
         var buffer = new ArrayBuffer(size * essz.INTEGER_BYTESIZE);
@@ -21,6 +22,12 @@ var essz = {
 
     bitMatrix2D : function(width,height){
         return new essz.BitMatrix2D(width,height);
+    },
+
+    shortArray : function(size){
+        var buffer = new ArrayBuffer(size * essz.SHORT_BYTESIZE);
+        var result = new Int16Array(buffer);
+        return result;
     }
 
 }
