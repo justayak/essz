@@ -39,72 +39,72 @@ var essz = {
  */
 essz.BitMatrix2D = function(width,height){
     // we have to map the width and height from bit to byte
-    var byteWidth = Math.ceil(width / 8.0);
+    var rest = width % 8
+    if (rest !== 0){
+        width = width + 8 - rest
+    }
+    width = Math.ceil(width / 8.0)
+    var byteWidth = width
     var buffer = new ArrayBuffer(byteWidth * height);
     this._data = new Uint8Array(buffer);
+    this.bytePerRow = byteWidth|0
     this.byteWidth = byteWidth;
     this.byteHeight = height;
 };
 
 essz.BitMatrix2D.prototype.set = function(x,y){
-    var bytePosX = (x / 8.0);
-    bytePosX = bytePosX|bytePosX; // fast floor (only 32bit integer!)
-    var bitPosX = x % 8
+    var bytePos = this.bytePerRow * y
+    var lineAdd = x / 8.0
+    lineAdd = lineAdd|lineAdd// fast floor (only 32bit integer!)
+    var bit = x % 8
+    var pos = bytePos + lineAdd
+    var n= this._data[pos]
+    var mask = 1 << bit
+    n|=mask
+    this._data[pos] = n
+    return this
 
-    var pos = (bytePosX*this.byteWidth) + y;
-    var n = this._data[pos];
-
-    var mask = 1 << bitPosX;
-    n |= mask;
-    this._data[pos] = n;
-    return this;
-};
+}
 
 essz.BitMatrix2D.prototype.clear = function(x,y){
-    var bytePosX = (x / 8.0);
-    bytePosX = bytePosX|bytePosX; // fast floor (only 32bit integer!)
-    var bitPosX = x % 8
-
-    var pos = (bytePosX*this.byteWidth) + y;
-    var n = this._data[pos];
-
-    var mask = 1 << bitPosX;
+    var bytePos = this.bytePerRow * y
+    var lineAdd = x / 8.0
+    lineAdd = lineAdd|lineAdd// fast floor (only 32bit integer!)
+    var bit = x % 8
+    var pos = bytePos + lineAdd
+    var n= this._data[pos]
+    var mask = 1 << bit
     n &=~mask;
     this._data[pos] = n;
     return this;
 }
 
 essz.BitMatrix2D.prototype.test = function(x,y){
-    var bytePosX = (x / 8.0);
-    bytePosX = bytePosX|bytePosX; // fast floor (only 32bit integer!)
-    var bitPosX = x % 8
-
-    var pos = (bytePosX*this.byteWidth) + y;
-    var n = this._data[pos];
-
-    var mask = 1 << bitPosX;
+    var bytePos = this.bytePerRow * y
+    var lineAdd = x / 8.0
+    lineAdd = lineAdd|lineAdd// fast floor (only 32bit integer!)
+    var bit = x % 8
+    var pos = bytePos + lineAdd
+    var n= this._data[pos]
+    var mask = 1 << bit
     return ((n&mask) != 0)
 };
 
-essz.BitMatrix2D.prototype.debug = function(bit8sign, bit4sign){
-    var bit8sign = bit8sign || ""
-    var bit4sign = bit4sign || ""
+essz.BitMatrix2D.prototype.debug = function(lineBreak, bit8sign, bit4sign){
+    bit8sign = bit8sign || ""
+    bit4sign = bit4sign || ""
+    lineBreak = lineBreak || "\n"
     var result = "";
     for (var y = 0; y < this.byteHeight;y++){
-        if (y%8===0){
-            result +=bit8sign;
-        }else if (y%4===0){
-            result +=bit4sign;
-        }
         for (var x = 0; x < (this.byteWidth * 8);x++){
             if (x%8===0){
-                result += bit8sign
+                result += " "
             }else if (x%4===0){
                 result += bit4sign
             }
-            result += (this.test(x,y) ? "1 " : "0 ");
+            result += (this.test(x,y) ? "1" : "0");
         }
-        result += "\n";
+        result +=lineBreak;
     }
     return result;
 }
