@@ -86,19 +86,21 @@ essz.BitMatrix2D.prototype.test = function(x,y){
     return ((n&mask) != 0)
 };
 
-essz.BitMatrix2D.prototype.debug = function(){
+essz.BitMatrix2D.prototype.debug = function(bit8sign, bit4sign){
+    var bit8sign = bit8sign || ""
+    var bit4sign = bit4sign || ""
     var result = "";
     for (var y = 0; y < this.byteHeight;y++){
         if (y%8===0){
-            result +="\n\n";
+            result +=bit8sign;
         }else if (y%4===0){
-            result +="\n";
+            result +=bit4sign;
         }
         for (var x = 0; x < (this.byteWidth * 8);x++){
             if (x%8===0){
-                result += "  "
+                result += bit8sign
             }else if (x%4===0){
-                result += " "
+                result += bit4sign
             }
             result += (this.test(x,y) ? "1 " : "0 ");
         }
