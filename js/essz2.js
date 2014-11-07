@@ -34,13 +34,21 @@
         return this.values[key];
     };
 
+    /**
+     * Fisher-Yates-shuffle
+     * @param n
+     * @returns {Array}
+     */
     HashList.prototype.sample = function (n) {
         var keys = Object.keys(this.values);
         var s = keys.length-1;
-        var result = [], pos, i = 0, V = this.values;
-        for(; i <= s && i < n; i++){
-            pos = getRandomInt(0,s);
-            result.push(V[keys[pos]]);
+        var m = n > keys.length ? keys.length : n;
+
+        var result = [], j, i = 0, V = this.values;
+        for(;i < m; i++){
+            j = getRandomInt(i,s);
+            swap(keys,i,j);
+            result.push(V[keys[i]]);
         }
         return result;
     };
@@ -54,6 +62,14 @@
     HashList.prototype.size = function () {
         return Object.keys(this.values).length;
     };
+
+    function swap(array, i, j) {
+        if (i !== j) {
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;

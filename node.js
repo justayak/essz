@@ -12,7 +12,7 @@ if (true){
 
     var start = Date.now();
 
-    var q = h.sample(200);
+    var q = h.sample(5);
 
     var end = Date.now();
 
