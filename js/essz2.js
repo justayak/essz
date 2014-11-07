@@ -34,6 +34,17 @@
         return this.values[key];
     };
 
+    HashList.prototype.sample = function (n) {
+        var keys = Object.keys(this.values);
+        var s = keys.length-1;
+        var result = [], pos, i = 0, V = this.values;
+        for(; i <= s && i < n; i++){
+            pos = getRandomInt(0,s);
+            result.push(V[keys[pos]]);
+        }
+        return result;
+    };
+
     HashList.prototype.at = function(index){
         var keys = Object.keys(this.values);
         if (index < 0 || index >= keys.length) throw "HashList: OutOfBounds";
@@ -43,6 +54,10 @@
     HashList.prototype.size = function () {
         return Object.keys(this.values).length;
     };
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     /**
      *

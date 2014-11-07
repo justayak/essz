@@ -6,25 +6,19 @@ var ß = require("./js/essz2");
 if (true){
 
     var h = ß.HashList();
-    for(var i = 0; i < 100000; i++){
+    for(var i = 0; i < 1000000; i++){
         h.put("key" + i, "value"+i);
     }
 
     var start = Date.now();
 
-    var q = h.at(1);
+    var q = h.sample(200);
 
     var end = Date.now();
+
     console.log(q);
     console.log(end-start);
 
-    var b = ß.HashList();
-
-    b.put("Hallo", "welt");
-    var keys = Object.keys(b.values);
-    console.log(keys);
-    b.put("Demo", "welt");
-    console.log(keys);
 
 } else {
     var m = new ß.BitMatrix2D(9,8);
