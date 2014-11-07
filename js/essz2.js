@@ -5,6 +5,45 @@
 
     "use strict";
 
+    // == HASH LIST
+
+    /**
+     *
+     * @type {HashList}
+     */
+    var HashList = exports.HashList = function () {
+        if (! (this instanceof HashList)) return new HashList();
+        this.values = {};
+    };
+
+    HashList.prototype.has = function(key){
+        return key in this.values;
+    };
+
+    HashList.prototype.put = function (key, value) {
+        this.values[key] = value;
+        return this;
+    };
+
+    HashList.prototype.delete = function (key) {
+        delete this.values[key];
+        return this;
+    };
+
+    HashList.prototype.get = function (key) {
+        return this.values[key];
+    };
+
+    HashList.prototype.at = function(index){
+        var keys = Object.keys(this.values);
+        if (index < 0 || index >= keys.length) throw "HashList: OutOfBounds";
+        return this.values[keys[index]];
+    };
+
+    HashList.prototype.size = function () {
+        return Object.keys(this.values).length;
+    };
+
     /**
      *
      * @type {BitMatrix2D}
