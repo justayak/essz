@@ -25,7 +25,7 @@
         return this;
     };
 
-    HashList.prototype.delete = function (key) {
+    HashList.prototype.remove = function (key) {
         delete this.values[key];
         return this;
     };
